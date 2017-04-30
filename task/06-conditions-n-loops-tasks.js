@@ -30,7 +30,15 @@
  *
  */
 function getFizzBuzz(num) {
-    throw new Error('Not implemented');
+    var result;
+    if (num % 3 == 0 && num % 5 != 0) {
+        result = 'Fizz'
+    } else if (num % 5 == 0 && num % 3 != 0) {
+        result = 'Buzz'
+    } else if (num % 3 == 0 && num % 5 == 0) {
+        result = 'FizzBuzz'
+    } else result = num;
+    return result;
 }
 
 
@@ -46,7 +54,13 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-    throw new Error('Not implemented');
+    var fact = 1;
+    if (n == 1) fact = 1;
+    for (var i = 0; i < n - 1; i++) {
+        fact *= n - i;
+    }
+    
+    return fact;
 }
 
 
@@ -63,9 +77,13 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-    throw new Error('Not implemented');
+    var sum = 0,
+        index;
+    for (var index = n1; index <= n2; index++) {
+        sum += index;
+    }
+    return sum;
 }
-
 
 /**
  * Returns true, if a triangle can be built with the specified sides a,b,c and false in any other ways.
@@ -81,10 +99,9 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(a,b,c) {
-    throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+    return (a < b + c) && (b < c + a) && (c < a + b);
 }
-
 
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
@@ -119,7 +136,8 @@ function isTriangle(a,b,c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
-    throw new Error('Not implemented');
+    return (rect1.top+rect1.height)>rect2.top
+           && (rect1.left+rect1.width)>rect2.left
 }
 
 
