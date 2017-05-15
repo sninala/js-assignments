@@ -69,7 +69,10 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    throw new Error('Not implemented');
+    var args = arguments;
+    return function(x){
+        return Array.from(args).reverse().reduce((p, c, i) => p + c * Math.pow(x, i));
+    }
 }
 
 
@@ -111,7 +114,13 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    throw new Error('Not implemented');
+    return function () {
+        for (let i = 0; i <= attempts; i++) {
+            try {
+                return func();
+            } catch (e) {}
+        }
+    };
 }
 
 
@@ -142,7 +151,6 @@ function logger(func, logFunc) {
     throw new Error('Not implemented');
 }
 
-
 /**
  * Return the function with partial applied arguments
  *
@@ -157,9 +165,11 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(fn) {
-    throw new Error('Not implemented');
+    let args = Array.from(arguments).slice(1);
+    return function () {
+        return fn(...args, ...arguments);
+    }
 }
-
 
 /**
  * Returns the id generator function that returns next integer starting from specified number every time when invoking.
@@ -178,7 +188,9 @@ function partialUsingArguments(fn) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-    throw new Error('Not implemented');
+    return function(){
+        return startFrom++;
+    }
 }
 
 

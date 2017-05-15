@@ -287,9 +287,10 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-    return arr.map(function(){
-        
-    });
+    return arr.reduce(function (prev, curr, ind) {
+        return prev.concat(Array.from({length: ind + 1}, () => curr))
+    }, []);
+   
 }
 
 
