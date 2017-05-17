@@ -55,6 +55,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
+    //TODO I know that it's not covered by us, it's ES2015 but try also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings
     return 'Hello, ' + firstName + ' ' + lastName + '!';
 }
 
@@ -69,6 +70,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
+    //TODO use match for such tasks better 
     var leadingStringToExculde = 'Hello, ',
         trailingStringToExclude = '!';
     return value.slice(leadingStringToExculde.length, -trailingStringToExclude.length);
@@ -116,6 +118,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'cat', 3 => 'catcatcat'
  */
 function repeatString(value, count) {
+    //TODO change it, it's very experimental https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/repeat
     return value.repeat(count);
 }
 
@@ -147,6 +150,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
+    //TODO where is ;
     return str.match(/\<(.*?)\>/)[1]
 }
 
@@ -203,6 +207,7 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
+    //TODO complete it
     throw new Error('Not implemented');
 }
 
@@ -223,6 +228,7 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
+    //TODO complete it
     throw new Error('Not implemented');
     //for(var i=0; i<str.length;i++){
         
@@ -243,6 +249,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
+    //TODO not necessary brackets around value
     return (typeof (value) == "string" || value instanceof String) ? true : false;
 }
 
@@ -275,6 +282,7 @@ function getCardId(value) {
     var symbols=["♣","♦","♥","♠"],
         cards=["A","2","3","4","5","6","7","8","9","10","J","Q","K"],
         index = 0, cardsMap = {};
+    //TODO think about other solution to improve performance
     for (var i=0; i<symbols.length; i++){
         for(var j=0; j<cards.length; j++){
             cardsMap[cards[j]+symbols[i]] = index;
