@@ -168,7 +168,8 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
-    throw new Error('Not implemented');
+    var distance = Math.sqrt(Math.pow(point.x - circle.center.x, 2) + Math.pow(point.y - circle.center.y, 2))
+    return distance < circle.radius;
 }
 
 
@@ -184,10 +185,18 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    throw new Error('Not implemented');
+    var result = null;
+    for (let i = 0; i < str.length; i++) {
+        var leftStr = str.slice(0, i);
+        var rightStr = str.slice(i + 1);
+        var currentChar = str[i];
+        if ((leftStr.indexOf(currentChar) === -1) && (rightStr.indexOf(currentChar) === -1)) {
+            result = str[i];
+            break;
+        }
+    }
+    return result;
 }
-
-
 /**
  * Returns the string representation of math interval, specified by two points and include / exclude flags.
  * See the details: https://en.wikipedia.org/wiki/Interval_(mathematics)
@@ -210,9 +219,24 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+    var result = "";
+    if (isStartIncluded) {
+        result += '[';
+    } else {
+        result += '(';
+    }
+    if (a > b) {
+        result += b + ', ' + a;
+    } else {
+        result += a + ', ' + b;
+    }
+    if (isEndIncluded) {
+        result += ']';
+    } else {
+        result += ')';
+    }
+    return result;
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -227,7 +251,8 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+    var arr = str.split("");
+    return arr.reverse().join("")
 }
 
 
@@ -244,9 +269,14 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+    var reversedNum = 0, remainder;
+    while (num != 0) {
+        remainder = num % 10;
+        reversedNum = reversedNum * 10 + remainder;
+        num = Math.floor(num / 10);
+    }
+    return reversedNum;
 }
-
 
 /**
  * Validates the CCN (credit card number) and return true if CCN is valid
@@ -288,9 +318,20 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+    function calculateResult(num) {
+        var arr = num.toString().split('').map(function (v) {
+            return Number(v)
+        });
+        return arr.reduce(function (x, y) {
+            return x + y;
+        })
+    }
+    var res = calculateResult(num);
+    while (res > 9) {
+        res = calculateResult(res);
+    }
+    return res;
 }
-
 
 /**
  * Returns true if the specified string has the balanced brackets and false otherwise.
@@ -314,9 +355,37 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+    var stack = [],
+        balanced = true,
+        index = 0,
+        opens = "([{<",
+        closers = ")]}>",
+        result, stackTop;
+    while ((index < str.length) && balanced) {
+        var symbol = str[index];
+        if (opens.indexOf(symbol) > -1) {
+            stack.push(symbol);
+        } else {
+            if (stack.length == 0) {
+                balanced = false;
+                break;
+            } else {
+                stackTop = stack.pop();
+                if (!(opens.indexOf(stackTop) === closers.indexOf(symbol))) {
+                    balanced = false;
+                    break;
+                }
+            }
+        }
+        index += 1;
+    }
+    if (balanced && stack.length == 0) {
+        result = true;
+    } else {
+        result = false;
+    }
+    return result;
 }
-
 
 /**
  * Returns the human readable string of time period specified by the start and end time.
@@ -350,7 +419,44 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    throw new Error('Not implemented');
+    var timeDiff, secs, mins, hours, days, months, years, result;
+    timeDiff = new Date(endDate) - new Date(startDate);
+    secs = timeDiff / 1000;
+    mins = secs / 60;
+    hours = mins / 60;
+    days = hours / 24;
+    months = days / 30;
+    years = months / 12;
+
+    function round(diff) {
+        return (diff - Math.floor(diff) > 0.5) ? Math.round(diff) : Math.floor(diff);
+    }
+    if (secs > 0) {
+        if (secs <= 45) {
+            result = 'a few seconds ago';
+        } else if (secs <= 90) {
+            result = 'a minute ago';
+        } else if (mins <= 45) {
+            result = round(mins) + ' minutes ago';
+        } else if (mins <= 90) {
+            result = 'an hour ago';
+        } else if (hours <= 22) {
+            result = round(hours) + ' hours ago';
+        } else if (hours <= 36) {
+            result = 'a day ago';
+        } else if (days <= 25) {
+            result = round(days) + ' days ago';
+        } else if (days <= 45) {
+            result = 'a month ago';
+        } else if (days <= 345) {
+            result = round(months) + ' months ago';
+        } else if (days <= 545) {
+            result = 'a year ago';
+        } else {
+            result = round(years) + ' years ago';
+        }
+    }
+    return result;
 }
 
 
@@ -374,7 +480,7 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    return num.toString(n);
 }
 
 
@@ -391,7 +497,19 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+    let temp = pathes[0];
+    let commonPath = '';
+    for (let i = 1; i < pathes.length; i++) {
+        for (let j = 0; j <= temp.lastIndexOf('/'); j++) {
+            if (temp[j] === pathes[i][j]) {
+                commonPath += (temp[j]);
+            } else {
+                temp = commonPath;
+                commonPath = '';
+            }
+        }
+    }
+    return commonPath;
 }
 
 
@@ -414,9 +532,21 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-    throw new Error('Not implemented');
+    const matrixProduct = [];
+    let sum = 0;
+    for (let i = 0; i < m1.length; i++) {
+        const temp = [];
+        for (let y = 0; y < m2[0].length; y++) {
+            for (let j = 0; j < m1[0].length; j++) {
+                sum += m1[i][j] * m2[j][y];
+            }
+            temp[y] = sum;
+            sum = 0;
+        }
+        matrixProduct.push(temp);
+    }
+    return matrixProduct;
 }
-
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.

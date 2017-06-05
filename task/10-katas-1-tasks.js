@@ -56,7 +56,19 @@ function createCompassPoints() {
  *   'nothing to do' => 'nothing to do'
  */
 function* expandBraces(str) {
-    throw new Error('Not implemented');
+    var queue = [str],
+        exist = [];
+    while (queue.length > 0) {
+        str = queue.shift();
+        let match = str.match(/\{([^{}]+)\}/);
+        if (match) {
+            for (var value of match[1].split(','))
+                queue.push(str.replace(match[0], value));
+        } else if (exist.indexOf(str) < 0) {
+            exist.push(str);
+            yield str;
+        }
+    }
 }
 
 

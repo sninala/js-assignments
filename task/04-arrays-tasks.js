@@ -455,7 +455,7 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  */
 function sortCitiesArray(arr) {
-   throw new Error('Not implemented');
+   return arr.sort((a, b) => (a.country.charCodeAt(0) - b.country.charCodeAt(0)) || (a.city.charCodeAt(0) - b.city.charCodeAt(0)));
 }
 
 /**
@@ -477,9 +477,16 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]   
  */
 function getIdentityMatrix(n) {
-   throw new Error('Not implemented');
+    return Array.from({
+        length: n
+    }, function (v, i) {
+        return Array.from({
+            length: n
+        }, function (v1, j) {
+            return (i == j) ? 1 : 0;
+        });
+    });
 }
-
 /**
  * Creates an array of integers from the specified start to end (inclusive)
  * 
@@ -547,7 +554,14 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-   throw new Error('Not implemented');
+   return array.reduce((previousValue, currentValue) => {
+        var key = keySelector(currentValue),
+            value = valueSelector(currentValue);
+        var arr = previousValue.get(key) || [];
+        arr.push(value);
+        previousValue.set(key, arr);
+        return previousValue;
+    }, new Map);
 }
 
 
@@ -563,7 +577,7 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-    throw new Error('Not implemented');
+    return arr.reduce((previousValue, currentValue) => previousValue.concat(childrenSelector(currentValue)), []);
 }
 
 
@@ -580,7 +594,7 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-    throw new Error('Not implemented');
+    return indexes.reduce((previousValue, currentValue) => previousValue[currentValue], arr);
 }
 
 
@@ -603,7 +617,13 @@ function getElementByIndexes(arr, indexes) {
  * 
  */
 function swapHeadAndTail(arr) {
-    throw new Error('Not implemented');
+    let len2 = Math.floor(arr.length / 2),
+        len22 = arr.length % 2;
+    return arr.map((v, i) => arr[
+        len22 && i === len2 ?
+        i :
+        (i + len2 + (i <= len2 ? len22 : 0)) % arr.length
+        ]);
 }
 
 
