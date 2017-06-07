@@ -230,11 +230,15 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    //TODO complete it
-    throw new Error('Not implemented');
-    //for(var i=0; i<str.length;i++){
-        
-    //}
+    return str.replace(/[A-Za-z]/g, function(match) {
+        var match = match.charCodeAt(0), result;
+        if( (match <= 'M'.charCodeAt(0)) || ((match <= 'm'.charCodeAt(0)) && (match >= 'a'.charCodeAt(0)))){
+           result = String.fromCharCode(match + 13);
+        } else {
+          result = String.fromCharCode(match - 13);
+        }
+        return result;
+    });
 }
 
 /**
