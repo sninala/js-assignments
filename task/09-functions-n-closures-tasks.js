@@ -148,9 +148,15 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    throw new Error('Not implemented');
+    return function () {
+        var args = JSON.stringify(Array.from(arguments)).slice(1, -1);
+        var str = func.name + '(' + args + ')';
+        logFunc(str + ' starts');
+        const result = func.apply(null, arguments);
+        logFunc(str + ' ends');
+        return result;
+    }
 }
-
 /**
  * Return the function with partial applied arguments
  *
