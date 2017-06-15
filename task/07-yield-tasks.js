@@ -97,9 +97,18 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    var stack = [];
+    stack.push(root);
+    while (stack.length) {
+        var elem = stack.pop();
+        if (elem.children) {
+            for (var exm of elem.children.reverse()) {
+                stack.push(exm);
+            }
+        }
+        yield elem;
+    }
 }
-
 
 /**
  * Traverses a tree using the breadth-first strategy

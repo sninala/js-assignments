@@ -113,33 +113,126 @@ function fromJSON(proto, json) {
 const cssSelectorBuilder = {
 
     element: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().element(value);
     },
 
     id: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().id(value);
     },
 
     class: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().class(value);
     },
 
     attr: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().attr(value);
     },
 
     pseudoClass: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().pseudoClass(value);
     },
 
     pseudoElement: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().pseudoElement(value);
     },
 
     combine: function(selector1, combinator, selector2) {
-        throw new Error('Not implemented');
+        return new CssSelector().combine(selector1, combinator, selector2);
     },
 };
+
+function CssSelectorCombined(selector) {
+    this.stringify = function() {
+        return selector;
+    }
+}
+
+function CssSelector() {
+
+    const CSS_SELECTOR_ERRORS = [
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+    ];
+
+    function raiseErrorIfSelectorHasValue(values) {
+        var result = values.some(function(value){
+            return value;
+        });
+        if (result)
+            throw new Error(CSS_SELECTOR_ERRORS[1]);
+    }
+
+    function addElementToArray(arr, elem) {
+        if (arr) {
+            arr.push(elem);
+            return arr;
+        }
+        return [elem];
+    }
+
+    this.element = function (value) {
+        if (this._element)
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        raiseErrorIfSelectorHasValue([this._id, this._class, this._attr, this._pseudoClass, this._pseudoElement]);
+        this._element = value;
+        return this;
+    };
+
+    this.id = function (value) {
+        if (this._id)
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        raiseErrorIfSelectorHasValue([this._class, this._attr, this._pseudoClass, this._pseudoElement]);
+        this._id = value;
+        return this;
+    };
+
+    this.class = function (value) {
+        raiseErrorIfSelectorHasValue([this._attr, this._pseudoClass, this._pseudoElement]);
+        this._class = addElementToArray(this._class, value);
+        return this;
+    };
+
+    this.attr = function (value) {
+        raiseErrorIfSelectorHasValue([this._pseudoClass, this._pseudoElement]);
+        this._attr = addElementToArray(this._attr, value);
+        return this;
+    };
+
+    this.pseudoClass = function (value) {
+        raiseErrorIfSelectorHasValue([this._pseudoElement]);
+        this._pseudoClass = addElementToArray(this._pseudoClass, value);
+        return this;
+    };
+
+    this.pseudoElement = function (value) {
+        if (this._pseudoElement)
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        this._pseudoElement = value;
+        return this;
+    };
+
+    this.stringify = function () {
+        var result = '';
+        if (this._element)
+            result += this._element;
+        if (this._id)
+            result += '#' + this._id;
+        if (this._class)
+            result += this._class.map(e => "." + e).join('');
+        if (this._attr)
+            result += this._attr.map(e => '['+ e + ']').join('');
+        if (this._pseudoClass)
+            result += this._pseudoClass.map(e => ':'+ e).join('');
+        if (this._pseudoElement)
+            result += '::' + this._pseudoElement;
+        return result;
+    };
+
+    this.combine = function (selector1, combinator, selector2) {
+        return new CssSelectorCombined(selector1.stringify() + ' ' + combinator + ' ' + selector2.stringify());
+    }
+
+}
 
 
 module.exports = {
