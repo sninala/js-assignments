@@ -132,9 +132,16 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    var sourceTree = [root];
+    for (var node of sourceTree) {
+        yield node;
+        if (node.children) {
+            for (var child of node.children) {
+                sourceTree.push(child);
+            }
+        }
+    }
 }
-
 
 /**
  * Merges two yield-style sorted sequences into the one sorted sequence.
